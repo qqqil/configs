@@ -82,4 +82,4 @@ set encoding=utf8
 
 set ffs=unix,dos,mac
 
-
+set nu
