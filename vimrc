@@ -5,16 +5,29 @@
 " everytime an upgrade of the vim packages is performed.  It is recommended to
 " make changes after sourcing debian.vim since it alters the value of the
 " 'compatible' option.
+" 配置多语言环境,解决中文乱码问题
 
-" This line should not be removed as it ensures that various options are
-" properly set to work with the Vim-related packages available in Debian.
-runtime! debian.vim
+if has("multi_byte")
+    " UTF-8 编码
+    set encoding=utf-8
+    set termencoding=utf-8
+    set formatoptions+=mM
+    set fencs=utf-8,gbk
+    if v:lang =~? '^/(zh/)/|/(ja/)/|/(ko/)'
+        set ambiwidth=double
+    endif
+    if has("win32")
+        source $VIMRUNTIME/delmenu.vim
+        source $VIMRUNTIME/menu.vim
+        language messages zh_CN.utf-8
+    endif
+else
+    echoerr "Sorry, this version of (g)vim was not compiled with +multi_byte"
+endif
 
 "sets how many lines of history VIM has to remember
 set history=700
 
-filetype plugin on
-filetype indent on
 
 "set to auto read when a file is changed from the outside
 set autoread
@@ -57,10 +70,6 @@ set autowrite		" Automatically save before commands like :next and :make
 "set hidden             " Hide buffers when they are abandoned
 set mouse=a		" Enable mouse usage (all modes)
 
-" Source a global configuration file if available
-if filereadable("/etc/vim/vimrc.local")
-  source /etc/vim/vimrc.local
-endif
 set wildmenu
 set showcmd
 set hlsearch
@@ -83,3 +92,9 @@ set encoding=utf8
 set ffs=unix,dos,mac
 
 set nu
+
+set autochdir
+
+map <F2> :NERDTreeToggle<CR>
+
+
